@@ -1,3 +1,24 @@
+import csv
+import numpy as np
+
+
+# Lit un fichier et retourne un tableau
+def lireBaseDeDonnee(nomFichier):
+	result = []
+	with open(nomFichier, newline='') as csvfile:
+		spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+		for row in spamreader:
+			result.append(row)
+	
+	return result
+
+# Ecrit un tableau dans un fichier csv
+def ecrireBDD(nomFichier, donnee):
+	with open(nomFichier, 'w', newline='') as csvfile:
+		spamwriter = csv.writer(csvfile, delimiter=' ',
+								quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		for row in donnee:
+			spamwriter.writerow(row)
 
 def transaction():
 	return 0
@@ -18,4 +39,14 @@ def chargerDonnee():
 
 
 if __name__ == '__main__':
-	print("test")
+	testTab = [[1,2],[3,4]]
+	ecrireBDD("test.csv", testTab)
+	result = lireBaseDeDonnee("test.csv")
+	
+	print(result)
+	
+	#return 0
+	
+
+
+
