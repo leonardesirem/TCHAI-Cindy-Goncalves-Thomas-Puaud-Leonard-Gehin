@@ -9,6 +9,6 @@ Nous avons choisie d'utiliser Flask avec python afin d'avoir un code simple sans
 
 # Auteurs
 
-- Cindy GONCALVES : 
-- Thomas PUAUD : 
+- Cindy GONCALVES : goncalves.cindy@hotmail.fr
+- Thomas PUAUD : broz.jhimm@gmail.com
 - Leonard GEHIN : cuilliere169@gmail.com
