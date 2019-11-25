@@ -22,6 +22,10 @@ def init_db():
 def home():
     return render_template('accueil.html')
 
+@app.route('/ajouterTransaction')
+def ajouterTransactionAccueil():
+    return render_template('ajouterTransaction.html')
+
 @app.route('/ajouterTransaction',methods = ['POST'])
 def ajouterTransaction():
     try:
