@@ -35,9 +35,7 @@ def ajouterTransaction():
         with sql.connect("database.db") as con:
             cur = con.cursor()
 
-            cur.execute("INSERT INTO transaction (exp,dest,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date) )
-            #cur.execute("UPDATE personne SET personne.solde = personne.solde - montant WHERE personne=exp")
-            #cur.execute("UPDATE personne SET personne.solde = personne.solde + montant WHERE personne=dest")
+            cur.execute("INSERT INTO transaction (expediteur,destinataire,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date))
 
             con.commit()
             msg = "Transaction successfully added"
@@ -55,7 +53,7 @@ def list():
     con.row_factory = sql.Row
 
     cur = con.cursor()
-    cur.execute("select * from transaction order by date")
+    cur.execute("select * from tabletransaction order by date")
 
     rows = cur.fetchall();
     return render_template("list.html",rows = rows)
@@ -87,7 +85,7 @@ def soldParPers():
         with sql.connect("database.db") as con:
             con.row_factory = sql.Row
             cur = con.cursor()
-
+            #Requete à modifier en prenant en compte la suppression de la table personne
             cur.execute("select solde from personne where personne.nom='nom'")
             rows = cur.fetchall();
             msg = "Transaction successfully added"
