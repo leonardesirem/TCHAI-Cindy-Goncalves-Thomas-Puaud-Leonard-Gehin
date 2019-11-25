@@ -6,15 +6,13 @@ app = Flask(__name__, template_folder = "template")
 
 def init_db():
     nameFile = 'database.db'
+    fichierExiste = not os.path.isfile(nameFile)
     conn = sql.connect(nameFile)
     c = conn.cursor()
     
-    if not os.path.isfile(nameFile):
-        # Create table - Personne
-        c.execute('''CREATE TABLE PERSONNE ([pers_id] INTEGER PRIMARY KEY, [nom] text, [solde] real)''')
-
+    if fichierExiste:
         # Create table - Transaction
-        c.execute('''CREATE TABLE TRANSACTION ([transaction_id] INTEGER PRIMARY KEY, [expediteur] INTEGER FOREIGN KEY, [destinataire] INTEGER FOREIGN KEY, [montant] real, [Date] date)''')
+        c.execute('''CREATE TABLE TABLETRANSACTION ([transaction_id] INTEGER PRIMARY KEY, [expediteur] text, [destinataire] text, [montant] real, [Date] date)''')
 
     conn.commit()
 
