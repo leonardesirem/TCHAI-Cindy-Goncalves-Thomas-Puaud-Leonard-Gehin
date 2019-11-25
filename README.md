@@ -11,14 +11,15 @@ Pour la base de donnée, nous avons utilisé SQLite qui est léger et donc simpl
 
 # Instruction pour l'utilisation du programme
 
-```Dépendance : Flask, Python (> 3.6), SQLite3```
+Dépendance : ```Flask, Python (> 3.6), SQLite3```
 
 Pour démarrer le serveur :
 1. lancez la commande ```python3 src/main.py```
 1. Ensuite, connectez vous à l'adresse [127.0.0.1/5000](127.0.0.1/5000)
 
 Requêtes HTTP :
-```**A faire**```
+
+```A faire```
 
 # Auteurs
 
