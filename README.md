@@ -15,7 +15,7 @@ Dépendance : ```Flask, Python (> 3.6), SQLite3```
 
 Pour démarrer le serveur :
 1. lancez la commande ```python3 src/main.py```
-1. Ensuite, connectez vous à l'adresse [127.0.0.1/5000](127.0.0.1/5000)
+1. Ensuite, connectez vous à l'adresse [127.0.0.1:5000](127.0.0.1:5000)
 
 Requêtes HTTP :
 
