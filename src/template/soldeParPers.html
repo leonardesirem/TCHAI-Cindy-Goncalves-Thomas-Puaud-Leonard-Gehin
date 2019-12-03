@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<meta charset="UTF-8">
+   <body>
+   <h1>Voici la liste des transactions pour la personne demandée dans l'ordre chronologique:</h1>
+   </br>
+      <table border = 1>
+         <thead>
+            <td>Expéditeur</td>
+            <td>Destinataire</td>
+            <td>Montant</td>
+            <td>Date</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["expediteur"]}}</td>
+               <td>{{row["destinataire"]}}</td>
+               <td> {{row["montant"]}}</td>
+               <td>{{row['date']}}</td>	
+            </tr>
+         {% endfor %}
+      </table>
+      </br>
+	  </br>
+	  </br>
+	  <a href = "\">Retourner à la page d'accueil</a>
+   </body>
+</html>
