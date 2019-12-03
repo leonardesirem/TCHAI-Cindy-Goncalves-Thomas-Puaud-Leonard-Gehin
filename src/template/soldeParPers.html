@@ -6,20 +6,14 @@
    </br>
       <table border = 1>
          <thead>
-            <td>Expéditeur</td>
-            <td>Destinataire</td>
+            <td>Nom</td>
             <td>Montant</td>
-            <td>Date</td>
          </thead>
          
-         {% for row in rows %}
-            <tr>
-               <td>{{row["expediteur"]}}</td>
-               <td>{{row["destinataire"]}}</td>
-               <td> {{row["montant"]}}</td>
-               <td>{{row['date']}}</td>	
-            </tr>
-         {% endfor %}
+          <tr>
+             <td>{{resultat["nom"]}}</td>
+             <td>{{resultat["montant"]}}</td>
+          </tr>
       </table>
       </br>
 	  </br>

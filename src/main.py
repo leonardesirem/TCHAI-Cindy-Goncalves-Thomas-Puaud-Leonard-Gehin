@@ -89,7 +89,7 @@ def listParPers():
 def soldeParPersNom():
     return render_template('soldeParPersNom.html')
 
-     
+    
 @app.route('/soldeParPersNom', methods = ['POST','GET'])
 def soldParPers():   
     nom = request.form['nom'].lower()
@@ -100,11 +100,26 @@ def soldParPers():
     cur = con.cursor()
     cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,nom))
 
-    rows = cur.fetchall();
-    print('rows', rows)
-    print('rows[0]', rows[0])
+    data = [[row[0],row[1],row[2],row[3]] for row in cur.fetchall()]  
+    print('data', data)
     
-    return render_template("soldeParPers.html",rows = rows)
+    somme = 0
+    
+    for row in data:
+        # L'utilisateur est expediteur
+        if row[1] == nom:
+            somme -= row[3]
+            
+        # L'utilisateur est destinataire
+        if row[2] == nom:
+            somme += row[3]
+    
+    resultat = {
+        'nom': nom,
+        'montant': somme
+    }
+    
+    return render_template("soldeParPers.html",resultat = resultat)
 
 if __name__ == '__main__':
     init_db()
