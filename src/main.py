@@ -16,15 +16,17 @@ def init_db():
 
     conn.commit()
 
+
 @app.route('/')
 def home():
     return render_template('accueil.html')
+
 
 @app.route('/ajouterTransaction')
 def ajouterTransactionAccueil():
     return render_template('ajouterTransaction.html')
 
-#tester si on peut enlever le GET ci-dessous
+
 @app.route('/ajouterTransaction',methods = ['POST','GET'])
 def ajouterTransaction():
     try:
@@ -51,6 +53,7 @@ def ajouterTransaction():
         return render_template("result.html",msg = msg)
         con.close()
 
+
 @app.route('/list', methods = ['GET'])
 def list():
     con = sql.connect("database.db")
@@ -66,6 +69,7 @@ def list():
 @app.route('/listParPersNom')
 def listParPersNom():
     return render_template('listParPersNom.html')
+   
     
 @app.route('/listParPersNom', methods = ['POST','GET'])
 def listParPers():   
@@ -80,46 +84,27 @@ def listParPers():
     rows = cur.fetchall();
     return render_template("listParPers.html",rows = rows)
    
-# @app.route('/listParPers', methods = ['GET'])
-# def listParPers():   
-    # try:
-        # nom = request.form['nom'].lower()
+   
+@app.route('/soldeParPersNom')
+def soldeParPersNom():
+    return render_template('soldeParPersNom.html')
 
-        # with sql.connect("database.db") as con:
-            # con.row_factory = sql.Row
-            # cur = con.cursor()
-
-            # cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,))
-            # rows = cur.fetchall();
-    # except:
-        # con.rollback()
-        # msg = "Echec de la récupération des données"
-
-    # finally:
-        # return render_template("listParPers.html",rows = rows)
-        # con.close()
-		
-        
-#A modifier totalement car on n'a plus de table personne        
-@app.route('/soldeParPers', methods = ['GET'])
+     
+@app.route('/soldeParPersNom', methods = ['POST','GET'])
 def soldParPers():   
-    try:
-        nom = request.form['nom']
+    nom = request.form['nom'].lower()
 
-        with sql.connect("database.db") as con:
-            con.row_factory = sql.Row
-            cur = con.cursor()
-            #Requete à modifier en prenant en compte la suppression de la table personne
-            cur.execute("select solde from personne where personne.nom='nom'")
-            rows = cur.fetchall();
-            msg = "Transaction successfully added"
-    except:
-        con.rollback()
-        msg = "Echec de la récupération des données"
+    con = sql.connect("database.db")
+    con.row_factory = sql.Row
 
-    finally:
-        return render_template("soldeParPers.html",rows = rows)
-        con.close()
+    cur = con.cursor()
+    cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,nom))
+
+    rows = cur.fetchall();
+    print('rows', rows)
+    print('rows[0]', rows[0])
+    
+    return render_template("soldeParPers.html",rows = rows)
 
 if __name__ == '__main__':
     init_db()
