@@ -24,24 +24,28 @@ def home():
 def ajouterTransactionAccueil():
     return render_template('ajouterTransaction.html')
 
-@app.route('/ajouterTransaction',methods = ['POST'])
+#tester si on peut enlever le GET ci-dessous
+@app.route('/ajouterTransaction',methods = ['POST','GET'])
 def ajouterTransaction():
     try:
-        exp = request.form['exp']
-        dest = request.form['dest']
+        exp = request.form['exp'].lower()
+        dest = request.form['dest'].lower()
         montant = request.form['montant']
         date = str(datetime.now())
+        
+        if not montant:
+            montant = 0
 
         with sql.connect("database.db") as con:
             cur = con.cursor()
 
-            cur.execute("INSERT INTO transaction (expediteur,destinataire,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date))
+            cur.execute("INSERT INTO tabletransaction (expediteur,destinataire,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date))
 
             con.commit()
-            msg = "Transaction successfully added"
+            msg = "La transaction a été ajoutée avec succès."
     except:
         con.rollback()
-        msg = "Error in insert operation"
+        msg = "Transaction échouée."
 
     finally:
         return render_template("result.html",msg = msg)
@@ -57,26 +61,46 @@ def list():
 
     rows = cur.fetchall();
     return render_template("list.html",rows = rows)
-   
+    
+    
+@app.route('/listParPersNom')
+def listParPersNom():
+    return render_template('listParPersNom.html')
+    
 @app.route('/listParPers', methods = ['GET'])
 def listParPers():   
-    try:
-        nom = request.form['nom']
+    nom = request.form['nom'].lower()
 
-        with sql.connect("database.db") as con:
-            con.row_factory = sql.Row
-            cur = con.cursor()
+    con = sql.connect("database.db")
+    con.row_factory = sql.Row
 
-            cur.execute("select * from transaction where exp='nom' or dest='nom' order by date")
-            rows = cur.fetchall();
-    except:
-        con.rollback()
-        msg = "Echec de la récupération des données"
+    cur = con.cursor()
+    cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,))
 
-    finally:
-        return render_template("listParPers.html",rows = rows)
-        con.close()
+    rows = cur.fetchall();
+    return render_template("listParPers.html",rows = rows)
+   
+# @app.route('/listParPers', methods = ['GET'])
+# def listParPers():   
+    # try:
+        # nom = request.form['nom'].lower()
+
+        # with sql.connect("database.db") as con:
+            # con.row_factory = sql.Row
+            # cur = con.cursor()
+
+            # cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,))
+            # rows = cur.fetchall();
+    # except:
+        # con.rollback()
+        # msg = "Echec de la récupération des données"
+
+    # finally:
+        # return render_template("listParPers.html",rows = rows)
+        # con.close()
 		
+        
+#A modifier totalement car on n'a plus de table personne        
 @app.route('/soldeParPers', methods = ['GET'])
 def soldParPers():   
     try:
@@ -100,17 +124,3 @@ def soldParPers():
 if __name__ == '__main__':
     init_db()
     app.run(debug = True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
