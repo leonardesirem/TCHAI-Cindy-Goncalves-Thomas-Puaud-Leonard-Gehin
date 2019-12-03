@@ -67,7 +67,7 @@ def list():
 def listParPersNom():
     return render_template('listParPersNom.html')
     
-@app.route('/listParPers', methods = ['GET'])
+@app.route('/listParPersNom', methods = ['POST','GET'])
 def listParPers():   
     nom = request.form['nom'].lower()
 
@@ -75,7 +75,7 @@ def listParPers():
     con.row_factory = sql.Row
 
     cur = con.cursor()
-    cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,))
+    cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,nom))
 
     rows = cur.fetchall();
     return render_template("listParPers.html",rows = rows)
