@@ -10,6 +10,7 @@
             <td>Destinataire</td>
             <td>Montant</td>
             <td>Date</td>
+            <td>Hash</td>
          </thead>
          
          {% for row in rows %}
@@ -18,6 +19,7 @@
                <td>{{row["destinataire"]}}</td>
                <td> {{row["montant"]}}</td>
                <td>{{row['date']}}</td>	
+               <td>{{row['hashp1']}}</td>
             </tr>
          {% endfor %}
       </table>

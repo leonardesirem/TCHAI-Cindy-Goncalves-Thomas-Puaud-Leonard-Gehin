@@ -26,8 +26,11 @@ Exemple de requêtes HTTP :
 
 Dans cette version, vous pouvez ajouter des transaction, les visualiser et voir le solde que possède un individus.
 
-Vous pouvez exécuter le fichier ```test/attaque1.py``` pour démarrer une attaque sur la base de donnée et modifier le montant de la premiere transaction à 220. La base de donnée étant très simple, il suffit de modifier le montant d'une transaction pour faire une attaque avec succes.
+Vous pouvez exécuter le fichier ```test/attaque1.py``` pour démarrer une attaque sur la base de données et modifier le montant de la premiere transaction à 220. La base de données étant très simple, il suffit de modifier le montant d'une transaction pour faire une attaque avec succes.
 
+# Tchai v2
+
+Un hash est ajouté pour vérifier l'intégrité de nos données. Le serveur fonctionne de la même manière au niveau du client.
 
 # Auteurs
 

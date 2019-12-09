@@ -12,7 +12,7 @@ def init_db():
     
     if fichierExiste:
         # Create table - Transaction
-        c.execute('''CREATE TABLE TABLETRANSACTION ([transaction_id] INTEGER PRIMARY KEY, [expediteur] text, [destinataire] text, [montant] real, [Date] date)''')
+        c.execute('''CREATE TABLE TABLETRANSACTION ([transaction_id] INTEGER PRIMARY KEY, [expediteur] text, [destinataire] text, [montant] real, [Date] date, [hashp1] text)''')
 
     conn.commit()
 
@@ -35,13 +35,16 @@ def ajouterTransaction():
         montant = request.form['montant']
         date = str(datetime.now())
         
+        p1=(exp,dest,montant,date)
+        hashp1 = str(hash(p1))
+        
         if not montant:
             montant = 0
 
         with sql.connect(nameFileDatabase) as con:
             cur = con.cursor()
 
-            cur.execute("INSERT INTO tabletransaction (expediteur,destinataire,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date))
+            cur.execute("INSERT INTO tabletransaction (expediteur,destinataire,montant,date,hashp1) VALUES (?,?,?,?,?)",(exp,dest,montant,date,hashp1))
 
             con.commit()
             msg = "La transaction a été ajoutée avec succès."
