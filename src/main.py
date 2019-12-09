@@ -3,11 +3,11 @@ from datetime import datetime
 import sqlite3 as sql
 import os.path
 app = Flask(__name__, template_folder = "template")
+nameFileDatabase = './database.db'
 
 def init_db():
-    nameFile = 'database.db'
-    fichierExiste = not os.path.isfile(nameFile)
-    conn = sql.connect(nameFile)
+    fichierExiste = not os.path.isfile(nameFileDatabase)
+    conn = sql.connect(nameFileDatabase)
     c = conn.cursor()
     
     if fichierExiste:
@@ -38,7 +38,7 @@ def ajouterTransaction():
         if not montant:
             montant = 0
 
-        with sql.connect("database.db") as con:
+        with sql.connect(nameFileDatabase) as con:
             cur = con.cursor()
 
             cur.execute("INSERT INTO tabletransaction (expediteur,destinataire,montant,date) VALUES (?,?,?,?)",(exp,dest,montant,date))
@@ -56,7 +56,7 @@ def ajouterTransaction():
 
 @app.route('/list', methods = ['GET'])
 def list():
-    con = sql.connect("database.db")
+    con = sql.connect(nameFileDatabase)
     con.row_factory = sql.Row
 
     cur = con.cursor()
@@ -75,7 +75,7 @@ def listParPersNom():
 def listParPers():   
     nom = request.form['nom'].lower()
 
-    con = sql.connect("database.db")
+    con = sql.connect(nameFileDatabase)
     con.row_factory = sql.Row
 
     cur = con.cursor()
@@ -94,7 +94,7 @@ def soldeParPersNom():
 def soldParPers():   
     nom = request.form['nom'].lower()
 
-    con = sql.connect("database.db")
+    con = sql.connect(nameFileDatabase)
     con.row_factory = sql.Row
 
     cur = con.cursor()
@@ -123,4 +123,4 @@ def soldParPers():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug = True)
+    app.run(debug = True, host='127.0.0.1')

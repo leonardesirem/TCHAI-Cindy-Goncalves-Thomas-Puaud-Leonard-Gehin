@@ -14,19 +14,20 @@ Pour la base de donnée, nous avons utilisé SQLite qui est léger et donc simpl
 Dépendance : ```Flask, Python (> 3.6), SQLite3```
 
 Pour démarrer le serveur :
-1. Placez vous dans le dossier ```src/```
-1. Lancez la commande ```python3 main.py```
+1. Placez vous dans le dossier racine du dossier
+1. Lancez la commande ```python3 src/main.py```
 1. Ensuite, connectez vous à l'adresse [127.0.0.1:5000](127.0.0.1:5000)
 
-Requêtes HTTP :
+Exemple de requêtes HTTP :
 
 ```A faire```
 
-# Tchai v1 (branch exercice3)
+# Tchai v1
 
-Dans cette version, vous pouvez ajouter des transaction, les visualiser et voir le solde que possèdent un individus.
+Dans cette version, vous pouvez ajouter des transaction, les visualiser et voir le solde que possède un individus.
 
-```Mettre fichier pour faire l'attaque```
+Vous pouvez exécuter le fichier ```test/attaque1.py``` pour démarrer une attaque sur la base de donnée et modifier le montant de la premiere transaction à 220. La base de donnée étant très simple, il suffit de modifier le montant d'une transaction pour faire une attaque avec succes.
+
 
 # Auteurs
 
