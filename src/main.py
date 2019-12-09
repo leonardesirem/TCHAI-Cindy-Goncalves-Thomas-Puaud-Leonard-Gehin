@@ -103,7 +103,7 @@ def soldParPers():
     cur = con.cursor()
     cur.execute("select * from tabletransaction where expediteur=? or destinataire=? order by date", (nom,nom))
 
-    data = [[row[0],row[1],row[2],row[3]] for row in cur.fetchall()]  
+    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
     print('data', data)
     
     somme = 0
@@ -123,6 +123,27 @@ def soldParPers():
     }
     
     return render_template("soldeParPers.html",resultat = resultat)
+    
+@app.route('/integrite', methods = ['POST','GET'])
+def integrite():   
+
+    con = sql.connect(nameFileDatabase)
+    con.row_factory = sql.Row
+
+    cur = con.cursor()
+    cur.execute("select * from tabletransaction")
+
+    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
+    print('data', data)
+    
+    somme = 0
+    
+    for row in data:
+        p1=(row[1],row[2],row[3],row[4])
+        hashp1 = str(hash(p1))
+        print(hashp1)
+        
+    return render_template("integrite.html",msg='ok')
 
 if __name__ == '__main__':
     init_db()
