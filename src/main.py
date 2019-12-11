@@ -21,7 +21,25 @@ def init_db():
 def home():
     return render_template('accueil.html')
 
+def recuperationDerniereLigneBdd(): 
+    con = sql.connect(nameFileDatabase)
+    con.row_factory = sql.Row
 
+    cur = con.cursor()
+    cur.execute("select * from tabletransaction order by Date DESC limit 1")
+
+    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
+    
+    if len(data) > 0:
+        # La base est deja remplie
+        hashPrecedent = data[0][5]
+    else:
+        # La base est vide
+        hashPrecedent = 0
+    
+    
+    return hashPrecedent
+    
 @app.route('/ajouterTransaction')
 def ajouterTransactionAccueil():
     return render_template('ajouterTransaction.html')
@@ -35,7 +53,9 @@ def ajouterTransaction():
         montant = float(request.form['montant'])
         date = str(datetime.now())
         
-        p1=(exp,dest,montant,date)
+        hashPrecedent = recuperationDerniereLigneBdd();
+        
+        p1=(exp,dest,montant,date, hashPrecedent)
         hashp1 = str(hash(p1))
         
         if not montant:
@@ -133,24 +153,28 @@ def integrite():
     cur = con.cursor()
     cur.execute("select * from tabletransaction")
 
-    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]
+    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
     
-    msg = "Intégrité vérifiée"
-    if len(data) > 0:
-        somme = 0
+    if len(data) > 0:        
+        msg = "Intégrité vérifiée"
         
+        # L'ancien hash est initialise a 0 pour tester la premiere transaction
+        ancienHash = 0
         for row in data:
-            p1=(row[1],row[2],row[3],row[4])
+            p1=(row[1],row[2],row[3],row[4], ancienHash)
             hashp1 = str(hash(p1))
             
             if hashp1 != row[5]:
                 msg = "Intégrité corrompue"
+            
+            # Recupere hash actuel
+            ancienHash = row[5]
     else:
-        msg = "Base de donnee vide"
-        
-        
+        msg = "Il n'y a pas encore de données dans la base."
+          
     return render_template("integrite.html", msg=msg)
 
 if __name__ == '__main__':
     init_db()
     app.run(debug = True, host='127.0.0.1')
+
