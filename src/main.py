@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import sqlite3 as sql
 import os.path
+import hashlib
 app = Flask(__name__, template_folder = "template")
 nameFileDatabase = './database.db'
 
@@ -38,7 +39,11 @@ def recuperationDerniereLigneBdd():
         hashPrecedent = 0
     
     
-    return hashPrecedent
+    return str(hashPrecedent)
+    
+def calcHash(tupleToHash):
+    tupleStr = '{}{}{}{}{}'.format(tupleToHash[0], tupleToHash[1], tupleToHash[2], tupleToHash[3], tupleToHash[4])
+    return hashlib.md5(tupleStr.encode()).hexdigest()
     
 @app.route('/ajouterTransaction')
 def ajouterTransactionAccueil():
@@ -56,8 +61,8 @@ def ajouterTransaction():
         hashPrecedent = recuperationDerniereLigneBdd();
         
         p1=(exp,dest,montant,date, hashPrecedent)
-        hashp1 = str(hash(p1))
-        
+        hashp1 = calcHash(p1)
+                
         if not montant:
             montant = 0
 
@@ -151,7 +156,7 @@ def integrite():
     con.row_factory = sql.Row
 
     cur = con.cursor()
-    cur.execute("select * from tabletransaction")
+    cur.execute("select * from tabletransaction order by date")
 
     data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
     
@@ -162,7 +167,7 @@ def integrite():
         ancienHash = 0
         for row in data:
             p1=(row[1],row[2],row[3],row[4], ancienHash)
-            hashp1 = str(hash(p1))
+            hashp1 = calcHash(p1)
             
             if hashp1 != row[5]:
                 msg = "Intégrité corrompue"
