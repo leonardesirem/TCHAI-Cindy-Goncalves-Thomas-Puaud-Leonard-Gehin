@@ -4,7 +4,7 @@ import numpy as np
 # Doit etre lance depuit la racine du projet
 
 def hack():
-  # Chargement de la base
+    # Chargement de la base
     nameFile = './database.db'
 
     con = sql.connect(nameFile)
