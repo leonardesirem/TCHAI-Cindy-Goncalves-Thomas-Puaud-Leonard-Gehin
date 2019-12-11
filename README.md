@@ -2,7 +2,7 @@
 
 Voici [le lien](https://kirgizov.link/teaching/esirem/advanced-information-systems-2019/TP-PROJET-TCHAI.pdf) vers la fiche du projet.
 
-# Decision a travers le projet
+# Décision à travers le projet
 
 Nous avons choisi d'utiliser Flask avec Python afin d'avoir un code simple sans trop de fioritures.
 
@@ -53,7 +53,15 @@ Vous pouvez exécuter le fichier ```test/attaque1.py``` pour démarrer une attaq
 
 Un hash est ajouté pour vérifier l'intégrité de nos données. Le serveur fonctionne de la même manière au niveau du client.
 
-Pour verifier que la verification de l'integrite fonctionne bien, vous pouvez vous placer dans le commit ```768dd292413f25aeff94315e2806bfc178584552```
+Pour verifier que la verification de l'integrite fonctionne bien dans le Tchai v2, vous pouvez vous placer dans le commit ```768dd292413f25aeff94315e2806bfc178584552```
+
+# Tchai v3
+
+Les hashs sont maintenant calcule en utilisant le hash de la precedente transaction. Pour la premiere transaction, le hash precedent est initialise a `0`.
+
+Les deux attaques precedente ne fonctionne plus sur cette nouvelle base de donnees. Cependant, si la deuxieme attaque supprime la derniere transaction, la verification d'integrite des donnees ne s'en rendra pas compte.
+
+De meme, si un attaquant pirate la base de donnees et ajoute des transactions a son benefice, il sera detecter par la verification d'integrite, sauf si le pirate ajoute son attaque malicieuse apres la derniere attaque.
 
 # Auteurs
 
