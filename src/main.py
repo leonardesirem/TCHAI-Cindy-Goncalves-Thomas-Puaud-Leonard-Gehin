@@ -135,15 +135,18 @@ def integrite():
 
     data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]
     
-    somme = 0
-    
-    for row in data:
-        p1=(row[1],row[2],row[3],row[4])
-        hashp1 = str(hash(p1))
+    msg = "Intégrité vérifiée"
+    if len(data) > 0:
+        somme = 0
         
-        msg = "Intégrité vérifiée"
-        if hashp1 != row[5]:
-            msg = "Intégrité corrompue"
+        for row in data:
+            p1=(row[1],row[2],row[3],row[4])
+            hashp1 = str(hash(p1))
+            
+            if hashp1 != row[5]:
+                msg = "Intégrité corrompue"
+    else:
+        msg = "Base de donnee vide"
         
         
     return render_template("integrite.html", msg=msg)
