@@ -32,7 +32,7 @@ def ajouterTransaction():
     try:
         exp = request.form['exp'].lower()
         dest = request.form['dest'].lower()
-        montant = request.form['montant']
+        montant = float(request.form['montant'])
         date = str(datetime.now())
         
         p1=(exp,dest,montant,date)
@@ -133,17 +133,20 @@ def integrite():
     cur = con.cursor()
     cur.execute("select * from tabletransaction")
 
-    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]  
-    print('data', data)
+    data = [[row[0],row[1],row[2],row[3],row[4],row[5]] for row in cur.fetchall()]
     
     somme = 0
     
     for row in data:
         p1=(row[1],row[2],row[3],row[4])
         hashp1 = str(hash(p1))
-        print(hashp1)
         
-    return render_template("integrite.html",msg='ok')
+        msg = "Intégrité vérifiée"
+        if hashp1 != row[5]:
+            msg = "Intégrité corrompue"
+        
+        
+    return render_template("integrite.html", msg=msg)
 
 if __name__ == '__main__':
     init_db()
